@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "edelweiss-multiprocess"
+version = "0.1.0"
+description = ""
+authors = ["Tony Benoy <me@tonybenoy.com>"]
+readme = "README.md"
+packages = [{include = "edelweiss_multiprocess"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+websockets = "^10.3"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^22.8.0"
+mypy = "^0.971"
+isort = "^5.10.1"
+pre-commit = "^2.20.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
