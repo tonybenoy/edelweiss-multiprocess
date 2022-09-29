@@ -1,3 +1,4 @@
+import pprint
 from multiprocessing import Process, Queue
 from queue import Empty
 from time import sleep
@@ -9,10 +10,12 @@ from edelweiss_multiprocess.main import (
     stream,
 )
 
+pp = pprint.PrettyPrinter(indent=4)
+
 
 def print_ltp(ltp: Queue):
     try:
-        print(ltp.get(block=False))
+        pp.pprint(ltp.get(block=False))
     except Empty:
         return
 

@@ -7,7 +7,7 @@ from typing import Any, Dict, List
 
 from edelweiss_multiprocess.constants import APPID, HOST, PORT
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.ERROR)
 
 
 def connect_socket(host: str = HOST, port: int = PORT) -> socket.SocketType:
@@ -25,7 +25,7 @@ def stream(sock: socket.SocketType, params: Dict[str, Any], queue: Queue):
             try:
                 data_dict = json.loads(data.decode("UTF-8"))
             except json.decoder.JSONDecodeError:
-                logging.error("JSONDecodeError")
+                logging.warning("JSONDecodeError")
                 continue
             ltp = {
                 data_dict["response"]["data"]["z3"]: data_dict["response"]["data"]["a9"]
@@ -55,15 +55,19 @@ def make_params(symbols: List[dict]) -> Dict[str, Any]:
     }
 
 
-def get_instrument_token(file: str, size: int):
+def get_instrument_token(file: str, size: int) -> List[Dict[str, str]]:
     count = 0
     tokens = []
-    with open(file, "r") as f:
-        instruments = csv.DictReader(f)
-        for row in instruments:
-            if row["exchangetoken"]:
-                count = count + 1
-                tokens.append(row["exchangetoken"])
-                if count >= size:
-                    break
+    try:
+        with open(file, "r") as f:
+            instruments = csv.DictReader(f)
+            for row in instruments:
+                if row["exchangetoken"]:
+                    count = count + 1
+                    tokens.append(row["exchangetoken"])
+                    if count >= size:
+                        break
+    except FileNotFoundError:
+        logging.error("File not found")
+        raise SystemExit
     return [{"symbol": str(token)} for token in tokens]
