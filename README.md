@@ -15,5 +15,5 @@ poetry install
 THe functions are exposed in the `edelweiss_multiprocessing` module. To run the example, run:
 
 ```bash
-python example.py
+python sample.py
 ```
